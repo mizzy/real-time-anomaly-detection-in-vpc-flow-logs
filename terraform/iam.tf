@@ -50,11 +50,3 @@ data "aws_iam_policy_document" "cloudwatch_to_kinesis_role_policy_document" {
     ]
   }
 }
-
-output "foo" {
-  value = "${aws_iam_role.cloudwatch_to_kinesis_role.arn}"
-}
-
-output "bar" {
-  value = "${aws_kinesis_stream.vpc_flow_logs.arn}"
-}
