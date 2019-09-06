@@ -11,7 +11,7 @@ resource "aws_instance" "vpc_flow_logs_anomary_detection" {
 
   key_name = "aws_mizzy"
 
-  tags {
+  tags = {
     Name = "vpc flow logs anomary detection"
   }
 }
