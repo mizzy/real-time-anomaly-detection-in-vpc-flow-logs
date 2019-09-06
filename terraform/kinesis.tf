@@ -6,6 +6,8 @@ resource "aws_kinesis_stream" "vpc_flow_logs" {
 resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
   name = "VPCFlowLogsAnalytics"
 
+  code = file("analytics.sql")
+
   inputs {
     name_prefix = "SOURCE_SQL_STREAM"
 
