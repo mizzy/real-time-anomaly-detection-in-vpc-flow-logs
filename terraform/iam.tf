@@ -92,6 +92,20 @@ data "aws_iam_policy_document" "allow_lambda_policy_document" {
       "${aws_lambda_function.kinesis_analytics_process_compressed_record.arn}:$LATEST",
     ]
   }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "kinesis:DescribeStream",
+      "kinesis:GetShardIterator",
+      "kinesis:GetRecords"
+    ]
+
+    resources = [
+      aws_kinesis_stream.vpc_flow_logs.arn
+    ]
+  }
 }
 
 resource "aws_iam_role" "kinesis_analytics_process_compressed_record" {
