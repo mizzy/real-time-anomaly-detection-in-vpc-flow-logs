@@ -10,7 +10,6 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
     name_prefix = "SOURCE_SQL_STREAM"
 
     kinesis_stream {
-      #resource_arn = "arn:aws:kinesis:ap-northeast-1:019115212452:stream/VPCFlowLogs"
       resource_arn = aws_kinesis_stream.vpc_flow_logs.arn
       role_arn     = "arn:aws:iam::019115212452:role/service-role/kinesis-analytics-VPCFlowLogsAnalytics-ap-northeast-1"
     }
