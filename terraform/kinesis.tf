@@ -20,7 +20,7 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
 
     processing_configuration {
       lambda {
-        resource_arn = "arn:aws:lambda:ap-northeast-1:019115212452:function:KinesisAnalyticsProcessCompressedRecord:$LATEST"
+        resource_arn = "${aws_lambda_function.kinesis_analytics_process_compressed_record.arn}:$LATEST"
         role_arn     = aws_iam_role.kinesis_analytics_vpc_flow_logs_analytics.arn
       }
     }

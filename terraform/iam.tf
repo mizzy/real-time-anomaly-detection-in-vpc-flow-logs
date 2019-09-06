@@ -71,3 +71,25 @@ data "aws_iam_policy_document" "kinesis_analytics_policy_document" {
     }
   }
 }
+
+
+resource "aws_iam_role" "kinesis_analytics_process_compressed_record" {
+  name               = "KinesisAnalyticsProcessCompressedRecord-role-utg78psh"
+  assume_role_policy = data.aws_iam_policy_document.lambda_policy_document.json
+  path               = "/service-role/"
+}
+
+data "aws_iam_policy_document" "lambda_policy_document" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}

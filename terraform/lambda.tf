@@ -3,6 +3,6 @@ resource "aws_lambda_function" "kinesis_analytics_process_compressed_record" {
   handler       = "index.handler"
 
   runtime = "nodejs10.x"
-  role    = "arn:aws:iam::019115212452:role/service-role/KinesisAnalyticsProcessCompressedRecord-role-utg78psh"
+  role    = aws_iam_role.kinesis_analytics_process_compressed_record.arn
   timeout = 60
 }
