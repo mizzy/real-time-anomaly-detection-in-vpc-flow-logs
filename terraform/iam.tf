@@ -1,13 +1,13 @@
 resource "aws_iam_role" "cloudwatch_to_kinesis_role" {
   name = "CloudWatchToKinesisRole"
 
-  assume_role_policy = "${data.aws_iam_policy_document.logs_policy_document.json}"
+  assume_role_policy = data.aws_iam_policy_document.logs_policy_document.json
 }
 
 resource "aws_iam_role_policy" "cloudwatch_to_kinesis_role_policy" {
   name   = "CloudWatchToKinesisRolePolicy"
-  role   = "${aws_iam_role.cloudwatch_to_kinesis_role.id}"
-  policy = "${data.aws_iam_policy_document.cloudwatch_to_kinesis_role_policy_document.json}"
+  role   = aws_iam_role.cloudwatch_to_kinesis_role.id
+  policy = data.aws_iam_policy_document.cloudwatch_to_kinesis_role_policy_document.json
 }
 
 data "aws_iam_policy_document" "logs_policy_document" {
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "cloudwatch_to_kinesis_role_policy_document" {
     ]
 
     resources = [
-      "${aws_kinesis_stream.vpc_flow_logs.arn}",
+      aws_kinesis_stream.vpc_flow_logs.arn,
     ]
   }
 
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "cloudwatch_to_kinesis_role_policy_document" {
     ]
 
     resources = [
-      "${aws_iam_role.cloudwatch_to_kinesis_role.arn}",
+      aws_iam_role.cloudwatch_to_kinesis_role.arn,
     ]
   }
 }

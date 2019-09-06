@@ -27,7 +27,7 @@ resource "aws_security_group" "vpc_flow_logs_anomary_detection" {
 }
 
 resource "aws_subnet" "vpc_flow_logs_anomary_detection" {
-  vpc_id     = "${aws_vpc.vpc_flow_logs_anomary_detection.id}"
+  vpc_id     = aws_vpc.vpc_flow_logs_anomary_detection.id
   cidr_block = "10.0.1.0/24"
 
   tags = {
@@ -36,7 +36,7 @@ resource "aws_subnet" "vpc_flow_logs_anomary_detection" {
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = "${aws_vpc.vpc_flow_logs_anomary_detection.id}"
+  vpc_id = aws_vpc.vpc_flow_logs_anomary_detection.id
 
   tags = {
     Name = "vpc flow logs anomary detection"
@@ -44,11 +44,11 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_route_table" "vpc_flow_logs_anomary_detection" {
-  vpc_id = "${aws_vpc.vpc_flow_logs_anomary_detection.id}"
+  vpc_id = aws_vpc.vpc_flow_logs_anomary_detection.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.gw.id}"
+    gateway_id = aws_internet_gateway.gw.id
   }
 
   tags = {
@@ -57,6 +57,6 @@ resource "aws_route_table" "vpc_flow_logs_anomary_detection" {
 }
 
 resource "aws_route_table_association" "vpc_flow_logs_anomary_detection" {
-  subnet_id      = "${aws_subnet.vpc_flow_logs_anomary_detection.id}"
-  route_table_id = "${aws_route_table.vpc_flow_logs_anomary_detection.id}"
+  subnet_id      = aws_subnet.vpc_flow_logs_anomary_detection.id
+  route_table_id = aws_route_table.vpc_flow_logs_anomary_detection.id
 }

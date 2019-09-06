@@ -1,10 +1,10 @@
 resource "aws_instance" "vpc_flow_logs_anomary_detection" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  subnet_id     = "${aws_subnet.vpc_flow_logs_anomary_detection.id}"
+  subnet_id     = aws_subnet.vpc_flow_logs_anomary_detection.id
 
   vpc_security_group_ids = [
-    "${aws_security_group.vpc_flow_logs_anomary_detection.id}",
+    aws_security_group.vpc_flow_logs_anomary_detection.id,
   ]
 
   associate_public_ip_address = true
