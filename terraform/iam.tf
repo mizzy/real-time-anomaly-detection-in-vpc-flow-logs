@@ -52,9 +52,10 @@ data "aws_iam_policy_document" "cloudwatch_to_kinesis_role_policy_document" {
 }
 
 resource "aws_iam_role" "kinesis_analytics_vpc_flow_logs_analytics" {
-  name               = "kinesis-analytics-VPCFlowLogsAnalytics-ap-northeast-1"
-  assume_role_policy = data.aws_iam_policy_document.kinesis_analytics_policy_document.json
-  path               = "/service-role/"
+  name                  = "kinesis-analytics-VPCFlowLogsAnalytics-ap-northeast-1"
+  assume_role_policy    = data.aws_iam_policy_document.kinesis_analytics_policy_document.json
+  path                  = "/service-role/"
+  force_detach_policies = true
 }
 
 data "aws_iam_policy_document" "kinesis_analytics_policy_document" {
@@ -74,9 +75,10 @@ data "aws_iam_policy_document" "kinesis_analytics_policy_document" {
 
 
 resource "aws_iam_role" "kinesis_analytics_process_compressed_record" {
-  name               = "KinesisAnalyticsProcessCompressedRecord-role-utg78psh"
-  assume_role_policy = data.aws_iam_policy_document.lambda_policy_document.json
-  path               = "/service-role/"
+  name                  = "KinesisAnalyticsProcessCompressedRecord-role-utg78psh"
+  assume_role_policy    = data.aws_iam_policy_document.lambda_policy_document.json
+  path                  = "/service-role/"
+  force_detach_policies = true
 }
 
 data "aws_iam_policy_document" "lambda_policy_document" {
