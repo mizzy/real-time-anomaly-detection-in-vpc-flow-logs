@@ -11,7 +11,7 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
 
     kinesis_stream {
       resource_arn = aws_kinesis_stream.vpc_flow_logs.arn
-      role_arn     = "arn:aws:iam::019115212452:role/service-role/kinesis-analytics-VPCFlowLogsAnalytics-ap-northeast-1"
+      role_arn     = aws_iam_role.kinesis_analytics_vpc_flow_logs_analytics.arn
     }
 
     parallelism {
@@ -21,7 +21,7 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
     processing_configuration {
       lambda {
         resource_arn = "arn:aws:lambda:ap-northeast-1:019115212452:function:KinesisAnalyticsProcessCompressedRecord:$LATEST"
-        role_arn     = "arn:aws:iam::019115212452:role/service-role/kinesis-analytics-VPCFlowLogsAnalytics-ap-northeast-1"
+        role_arn     = aws_iam_role.kinesis_analytics_vpc_flow_logs_analytics.arn
       }
     }
 
