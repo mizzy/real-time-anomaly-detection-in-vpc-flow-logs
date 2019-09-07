@@ -13,7 +13,7 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
 
     kinesis_stream {
       resource_arn = aws_kinesis_stream.vpc_flow_logs.arn
-      role_arn     = aws_iam_role.kinesis_analytics_vpc_flow_logs_analytics.arn
+      role_arn     = aws_iam_role.kinesis_analytics.arn
     }
 
     parallelism {
@@ -23,7 +23,7 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
     processing_configuration {
       lambda {
         resource_arn = "${aws_lambda_function.kinesis_analytics_process_compressed_record.arn}:$LATEST"
-        role_arn     = aws_iam_role.kinesis_analytics_vpc_flow_logs_analytics.arn
+        role_arn     = aws_iam_role.kinesis_analytics.arn
       }
     }
 
@@ -160,5 +160,62 @@ resource "aws_kinesis_analytics_application" "vpc_flow_logs_analytics" {
         sql_type = "INTEGER"
       }
     }
+  }
+}
+
+resource "aws_iam_role" "kinesis_analytics" {
+  name                  = "kinesis-analytics-VPCFlowLogsAnalytics"
+  assume_role_policy    = data.aws_iam_policy_document.kinesis_analytics_assume_role_policy.json
+  path                  = "/service-role/"
+  force_detach_policies = true
+}
+
+resource "aws_iam_role_policy" "kinesis_analytics" {
+  name   = "KinesisAnalyticsVPCFlowLogsAnalyticsRolePolicy"
+  role   = aws_iam_role.kinesis_analytics.id
+  policy = data.aws_iam_policy_document.kinesis_analytics.json
+}
+
+data "aws_iam_policy_document" "kinesis_analytics_assume_role_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["kinesisanalytics.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "kinesis_analytics" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "lambda:InvokeFunction",
+      "lambda:GetFunctionConfiguration",
+    ]
+
+    resources = [
+      "${aws_lambda_function.kinesis_analytics_process_compressed_record.arn}:$LATEST",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "kinesis:DescribeStream",
+      "kinesis:GetShardIterator",
+      "kinesis:GetRecords"
+    ]
+
+    resources = [
+      aws_kinesis_stream.vpc_flow_logs.arn
+    ]
   }
 }
